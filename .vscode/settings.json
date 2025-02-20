@@ -1,0 +1,7 @@
+{
+    "debug.inlineValues": "off",
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "debug.focusEditorOnBreak": true,
+    "debug.console.closeOnEnd": false
+}
