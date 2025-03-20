@@ -15,15 +15,35 @@ class TestLogin:
         browser = playwright.chromium.launch(headless=False, slow_mo=2000)
         context = browser.new_context()
         page = context.new_page()
-        retail_portal_home = "https://promotions.master.env/"
+        pricing_home = os.getenv("PRICING_PORTAL_HOME")
         user_name = os.getenv("USER_NAME")
         password = os.getenv("PASSWORD")
-        page.goto(retail_portal_home)
+        page.goto(pricing_home)
         login_page = LoginPage(page)
 
         login_page.user_name_textbox.fill(user_name)
         login_page.password_textbox.fill(password)
         login_page.login_button.click()
+
+        # ---------------------
+        context.close()
+        browser.close()
+
+    @pytest.mark.login
+    def test_login_invalid_user(self, playwright: Playwright):
+        browser = playwright.chromium.launch(headless=False, slow_mo=2000)
+        context = browser.new_context()
+        page = context.new_page()
+        pricing_home = os.getenv("PRICING_PORTAL_HOME")
+        user_name = "Automation Test"
+        password = os.getenv("PASSWORD")
+        page.goto(pricing_home)
+        login_page = LoginPage(page)
+
+        login_page.user_name_textbox.fill(user_name)
+        login_page.password_textbox.fill(password)
+        login_page.login_button.click()
+        
 
         # ---------------------
         context.close()
