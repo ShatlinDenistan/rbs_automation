@@ -15,7 +15,7 @@ class TestLogin:
         browser = playwright.chromium.launch(headless=False, slow_mo=2000)
         context = browser.new_context()
         page = context.new_page()
-        retail_portal_home = os.getenv("RETAIL_PORTAL_HOME")
+        retail_portal_home = "https://promotions.master.env/"
         user_name = os.getenv("USER_NAME")
         password = os.getenv("PASSWORD")
         page.goto(retail_portal_home)
