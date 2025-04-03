@@ -1,30 +1,40 @@
-from json import load
-import pytest
-import re
-from playwright.sync_api import Playwright, sync_playwright, expect
-from dotenv import load_dotenv
+"""Test login functionality for the retail application."""
+
 import os
-from pages.retail_portal.login_page import LoginPage
 
-load_dotenv(override=True)
+import pytest
+from tests.ui.retail.retail_test_base import RetailTestBase
 
 
-class TestLogin:
+@pytest.mark.usefixtures("test_init_without_logging_in")
+class TestLogin(RetailTestBase):
+    """Test login functionality for the retail application."""
+
     @pytest.mark.login
-    def test_login(self, playwright: Playwright):
-        browser = playwright.chromium.launch(headless=False, slow_mo=2000)
-        context = browser.new_context()
-        page = context.new_page()
-        retail_portal_home = "https://promotions.master.env/"
-        user_name = os.getenv("USER_NAME")
-        password = os.getenv("PASSWORD")
-        page.goto(retail_portal_home)
-        login_page = LoginPage(page)
+    def test_login_positive_scenario(self):
+        """Test login functionality."""
+        self.login_page.login()
 
-        login_page.user_name_textbox.fill(user_name)
-        login_page.password_textbox.fill(password)
-        login_page.login_button.click()
+    def test_login_without_password(self):
+        """Test login without password."""
+        self.login_page.login(password="", expected_to_login=False)
 
-        # ---------------------
-        context.close()
-        browser.close()
+    def test_login_without_username(self):
+        """Test login without username."""
+        self.login_page.login(username="", expected_to_login=False)
+
+    def test_login_with_invalid_username(self):
+        """Test login with invalid username."""
+        self.login_page.login(username="invalid_user", expected_to_login=False)
+
+    def test_login_with_invalid_password(self):
+        """Test login with invalid password."""
+        self.login_page.login(password="invalid_password", expected_to_login=False)
+
+    def test_login_with_invalid_username_and_password(self):
+        """Test login with invalid username and password."""
+        self.login_page.login(username="invalid_user", password="invalid_password", expected_to_login=False)
+
+    def test_login_with_empty_username_and_password(self):
+        """Test login with empty username and password."""
+        self.login_page.login(username="", password="", expected_to_login=False)

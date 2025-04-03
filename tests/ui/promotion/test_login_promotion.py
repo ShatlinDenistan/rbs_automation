@@ -11,6 +11,7 @@ load_dotenv(override=True)
 
 class TestLogin:
     @pytest.mark.login
+    @pytest.mark.RBS_2122
     def test_login(self, playwright: Playwright):
         browser = playwright.chromium.launch(headless=False, slow_mo=2000)
         context = browser.new_context()
